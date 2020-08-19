@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>potato测试</title>
+</head>
+<body>
+	<label for="dbName">
+		数据库名字: <input type="text" id="dbName" />
+	</label>
+	<br />
+	<label for="tableName">
+		表格名字: <input type="text" id="tableName" />
+	</label>
+	<br />
+	<label for="key">
+		键: <input type="text" id="key" />
+	</label>
+	<br />
+	<label for="val">
+		值: <input type="text" id="val" />
+	</label>
+	<br />
+	<label for="mode">
+		模式: indexDB<input type="radio" name="mode" value="indexDB"/>
+		localStorage<input type="radio" name="mode" value="localStorage" checked/>
+	</label>
+	<p>
+		<input type="button" value="新建数据库" id="newStoreButton"/>
+		<input type="button" value="查询数据库" id="searchStoreButton"/>
+	</p>
+
+	<p id="target"></p>
+
+	<script type="module">
+		import {store} from './src/store.js';
+
+		// 新建数据库
+		document.getElementById('newStoreButton').onclick = function(){
+			var dbName = document.getElementById('dbName').value;
+			var tableName = document.getElementById('tableName').value;
+			var key = document.getElementById('key').value;
+			var val = document.getElementById('val').value;
+			var mode;
+			document.getElementsByName('mode').forEach((item) => {
+				if(item.checked) {
+					mode = item.value;
+				}
+			});
+
+			var test = store.createInstance({
+				dbName: dbName,
+				tableName: tableName,
+				driver: mode
+			})
+
+			test.setItem(key, val)
+		}
+
+		// 查询数据库
+		document.getElementById('searchStoreButton').onclick = function(){
+			var dbName = document.getElementById('dbName').value;
+			var tableName = document.getElementById('tableName').value;
+			var mode;
+			document.getElementsByName('mode').forEach((item) => {
+				if(item.checked) {
+					mode = item.value;
+				}
+			});
+			var test = store.createInstance({
+				dbName: dbName,
+    		tableName: tableName,
+				driver: mode
+			})
+
+			test.entries().then(v => {
+				document.getElementById('target').innerText = JSON.stringify(v)
+			})
+		}
+	</script>
+</body>
+</html>

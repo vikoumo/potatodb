@@ -1,0 +1,19 @@
+{
+  "name": "potatodb",
+  "version": "2.0.0",
+  "main": "dist/potatodb.js",
+  "author": "duanwanyu <dwy.css@gmail.com>",
+  "license": "MIT",
+  "scripts": {
+    "build": "rollup --config rollup.config.js"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.11.1",
+    "@babel/preset-env": "^7.11.0",
+    "rollup": "^2.23.1",
+    "rollup-plugin-babel": "^4.4.0",
+    "rollup-plugin-commonjs": "^10.1.0",
+    "rollup-plugin-node-resolve": "^5.2.0",
+    "rollup-plugin-uglify": "^6.0.4"
+  }
+}

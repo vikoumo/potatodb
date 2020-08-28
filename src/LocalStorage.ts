@@ -1,11 +1,16 @@
+import { StoreOptions } from "./type";
+
 export default class LocalStorage {
-  constructor(options) {
+  storage: any;
+  _options: StoreOptions | null;
+  storageName: string;
+  constructor(options: StoreOptions) {
     this.storage = window.localStorage;
     this._options = options || null;
     this.storageName = this._options && `${this._options.dbName}/${this._options.tableName}/`
   }
 
-  getItem(key) {
+  getItem(key: string) {
     return new Promise((resolve, reject) => {
       try {
         const res = JSON.parse(this.storage.getItem(`${this.storageName}${key}`));
@@ -16,7 +21,7 @@ export default class LocalStorage {
     })
   }
 
-  setItem(key, val) {
+  setItem(key: string, val: any) {
     return new Promise((resolve, reject) => {
       try {
         this.storage.setItem(`${this.storageName}${key}`, JSON.stringify(val));
@@ -27,7 +32,7 @@ export default class LocalStorage {
     })
   }
 
-  removeItem(key) {
+  removeItem(key: string) {
     return new Promise((resolve, reject) => {
       try {
         this.storage.removeItem(`${this.storageName}${key}`);
@@ -72,7 +77,7 @@ export default class LocalStorage {
   keys() {
     return new Promise((resolve, reject) => {
       try {
-        let arr = [];
+        let arr: Array<string> = [];
         Object.keys(this.storage).forEach((item) => {
           if(item.includes(this.storageName)) {
             const reg = RegExp(this.storageName, "g");
@@ -93,7 +98,7 @@ export default class LocalStorage {
         Object.entries(this.storage).forEach((item) => {
           if(item[0].includes(this.storageName)) {
             const reg = RegExp(this.storageName, "g");
-            obj[item[0].replace(reg, '')] = JSON.parse(item[1]);
+            obj[item[0].replace(reg, '')] = JSON.parse(item[1] as string);
           }
         });
         resolve(obj);

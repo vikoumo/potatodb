@@ -7,6 +7,10 @@ var potatodb = (function () {
 		return module = { exports: {} }, fn(module, module.exports), module.exports;
 	}
 
+	function getCjsExportFromNamespace (n) {
+		return n && n['default'] || n;
+	}
+
 	var check = function (it) {
 	  return it && it.Math == Math && it;
 	}; // https://github.com/zloirock/core-js/issues/86#issuecomment-115759028
@@ -3036,12 +3040,13 @@ var potatodb = (function () {
 	var Store = /*#__PURE__*/function () {
 	  function Store() {
 	    _classCallCheck(this, Store);
+
+	    this._options = DefaultOptions;
 	  }
 
 	  _createClass(Store, [{
 	    key: "_create",
 	    value: function _create(options) {
-	      if (typeof options === 'undefined') return this;
 	      this._options = Object.assign({}, DefaultOptions, this._config(options));
 
 	      if (this._options.driver === 'localStorage') {
@@ -3082,7 +3087,9 @@ var potatodb = (function () {
 		store: store$2
 	});
 
-	var potatodb = store$3;
+	var require$$0 = getCjsExportFromNamespace(store$3);
+
+	var potatodb = require$$0;
 
 	return potatodb;
 

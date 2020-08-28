@@ -1,11 +1,16 @@
+import { StoreOptions } from "./type";
+
 export default class IndexedDB {
-  constructor(options) {
+  _options: StoreOptions;
+  db: IDBDatabase;
+  _ready: Promise<null>;
+  constructor(options: StoreOptions) {
     this._options = options;
     this.db = null;
     this._ready = this._open();
   }
 
-  _open(version) {
+  _open(version?: number):  Promise<null> {
     return new Promise((resolve, reject) => {
       const idb = window.indexedDB;
       if(version) {
@@ -52,7 +57,7 @@ export default class IndexedDB {
     })
   }
 
-  getItem(key) {
+  getItem(key: string) {
     return new Promise((resolve, reject) => {
       this._ready.then(() => {
         const req = this._getObjectStore().get(key);
@@ -62,7 +67,7 @@ export default class IndexedDB {
     })
   }
 
-  removeItem(key) {
+  removeItem(key: string) {
     return new Promise((resolve, reject) => {
       this._ready.then(() => {
         const req = this._getObjectStore().delete(key);
@@ -88,7 +93,7 @@ export default class IndexedDB {
         const objectStore = this._getObjectStore();
         let count = 0;
         objectStore.openCursor().onsuccess = function(e) {
-          const cursor = e.target.result;
+          const cursor = (e.target as IDBRequest).result;
           if (cursor && cursor !== null) {
             cursor.continue();
             count = count + 1;
@@ -109,7 +114,7 @@ export default class IndexedDB {
         const objectStore = this._getObjectStore();
         const arr = [];
         objectStore.openCursor().onsuccess = function(e) {
-          const cursor = e.target.result;
+          const cursor = (e.target as IDBRequest).result;
           if (cursor && cursor !== null) {
             cursor.continue();
             arr.push(cursor.key);
@@ -130,7 +135,7 @@ export default class IndexedDB {
         const objectStore = this._getObjectStore();
         const obj = {};
         objectStore.openCursor().onsuccess = function(e) {
-          const cursor = e.target.result;
+          const cursor = (e.target as IDBRequest).result;
           if (cursor && cursor !== null) {
             cursor.continue();
             obj[cursor.key] = cursor.value

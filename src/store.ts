@@ -1,5 +1,8 @@
-import IndexedDB from './IndexedDB.js';
-import LocalStorage from './LocalStorage.js';
+import IndexedDB from './IndexedDB';
+import LocalStorage from './LocalStorage';
+import './window.d.ts';
+import { StoreOptions } from './type.d';
+
 
 const indexedDB = window.indexedDB || window.mozIndexedDB || window.webkitIndexedDB || window.msIndexedDB;
 const DefaultOptions = {
@@ -9,10 +12,9 @@ const DefaultOptions = {
 }
 
 class Store {
+  _options: StoreOptions = DefaultOptions;
   constructor() {}
-
-  _create(options){
-    if(typeof options === 'undefined') return this;
+  _create(options?: StoreOptions){
     this._options = Object.assign({}, DefaultOptions, this._config(options));
     if (this._options.driver === 'localStorage') {
       return new LocalStorage(this._options);
@@ -21,11 +23,11 @@ class Store {
     }
   }
 
-  createInstance(options) {
+  createInstance(options?: StoreOptions) {
     return this._create(options);
   }
 
-  _config(options) {
+  _config(options?: StoreOptions) {
     if(typeof options !== 'object') {
       return new Error('options is not object');
     }

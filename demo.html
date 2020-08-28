@@ -34,9 +34,8 @@
 
 	<p id="target"></p>
 
-	<script type="module">
-		import {store} from './src/store.js';
-
+	<script src="./dist/potatodb.iife.js"></script>
+	<script>
 		// 新建数据库
 		document.getElementById('newStoreButton').onclick = function(){
 			var dbName = document.getElementById('dbName').value;
@@ -50,7 +49,7 @@
 				}
 			});
 
-			var test = store.createInstance({
+			var test = potatodb.store.createInstance({
 				dbName: dbName,
 				tableName: tableName,
 				driver: mode
@@ -69,7 +68,7 @@
 					mode = item.value;
 				}
 			});
-			var test = store.createInstance({
+			var test = potatodb.store.createInstance({
 				dbName: dbName,
     		tableName: tableName,
 				driver: mode

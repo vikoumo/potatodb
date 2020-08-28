@@ -1,1 +1,1 @@
-module.exports = require('./src/store.js');
+module.exports = require('./src/store.ts');

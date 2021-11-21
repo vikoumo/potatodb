@@ -5,7 +5,8 @@
   "author": "duanwanyu <dwy.css@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "build": "rollup --config rollup.config.js"
+    "start": "rollup -w -c script/rollup.config.dev.js",
+    "build": "rollup -c script/rollup.config.prod.js"
   },
   "devDependencies": {
     "@babel/core": "^7.11.1",
@@ -15,8 +16,9 @@
     "rollup-plugin-babel": "^4.4.0",
     "rollup-plugin-commonjs": "^10.1.0",
     "rollup-plugin-node-resolve": "^5.2.0",
+    "rollup-plugin-serve": "^1.1.0",
+    "rollup-plugin-terser": "^7.0.2",
     "rollup-plugin-typescript": "^1.0.1",
-    "rollup-plugin-uglify": "^6.0.4",
     "tslib": "^2.0.1",
     "typescript": "^4.0.2"
   }

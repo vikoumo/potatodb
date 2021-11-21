@@ -2,11 +2,11 @@ import { StoreOptions } from "./type";
 
 export default class LocalStorage {
   storage: any;
-  _options: StoreOptions | null;
+  _options: StoreOptions;
   storageName: string;
   constructor(options: StoreOptions) {
     this.storage = window.localStorage;
-    this._options = options || null;
+    this._options = options;
     this.storageName = this._options && `${this._options.dbName}/${this._options.tableName}/`
   }
 
@@ -32,7 +32,7 @@ export default class LocalStorage {
     })
   }
 
-  removeItem(key: string) {
+  removeItem(key: string): Promise<void> {
     return new Promise((resolve, reject) => {
       try {
         this.storage.removeItem(`${this.storageName}${key}`);
@@ -43,7 +43,7 @@ export default class LocalStorage {
     })
   }
 
-  clear() {
+  clear(): Promise<void> {
     return new Promise((resolve, reject) => {
       try {
         Object.keys(this.storage).forEach((item) => {

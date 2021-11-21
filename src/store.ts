@@ -39,5 +39,4 @@ class Store {
     return options;
   }
 }
-
 export const store = new Store();

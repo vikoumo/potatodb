@@ -2,15 +2,15 @@ import { StoreOptions } from "./type";
 
 export default class IndexedDB {
   _options: StoreOptions;
-  db: IDBDatabase;
-  _ready: Promise<null>;
+  db: IDBDatabase | null;
+  _ready: Promise<void>;
   constructor(options: StoreOptions) {
     this._options = options;
     this.db = null;
     this._ready = this._open();
   }
 
-  _open(version?: number):  Promise<null> {
+  _open(version?: number):  Promise<void> {
     return new Promise((resolve, reject) => {
       const idb = window.indexedDB;
       if(version) {
@@ -42,7 +42,7 @@ export default class IndexedDB {
   }
 
   _getObjectStore() {
-    const transaction = this.db.transaction([this._options.tableName], "readwrite");
+    const transaction = (this.db as IDBDatabase).transaction([this._options.tableName], "readwrite");
     const objectStore = transaction.objectStore(this._options.tableName);
     return objectStore;
   }
@@ -67,7 +67,7 @@ export default class IndexedDB {
     })
   }
 
-  removeItem(key: string) {
+  removeItem(key: string): Promise<void> {
     return new Promise((resolve, reject) => {
       this._ready.then(() => {
         const req = this._getObjectStore().delete(key);
@@ -77,7 +77,7 @@ export default class IndexedDB {
     })
   }
 
-  clear() {
+  clear(): Promise<void> {
     return new Promise((resolve, reject) => {
       this._ready.then(() => {
         const req = this._getObjectStore().clear();
@@ -112,7 +112,7 @@ export default class IndexedDB {
     return new Promise((resolve, reject) => {
       this._ready.then(() => {
         const objectStore = this._getObjectStore();
-        const arr = [];
+        const arr: any[] = [];
         objectStore.openCursor().onsuccess = function(e) {
           const cursor = (e.target as IDBRequest).result;
           if (cursor && cursor !== null) {

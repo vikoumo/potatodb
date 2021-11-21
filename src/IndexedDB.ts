@@ -33,6 +33,7 @@ export default class IndexedDB {
           resolve();
         }
       }
+      // 创建新的数据库或者增加已存在的数据库的版本号
       req.onupgradeneeded = () => {
         // console.log('db upgradeneeded');
         this.db = req.result;

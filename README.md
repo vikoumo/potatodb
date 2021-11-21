@@ -1,5 +1,4 @@
 # potatodb
-大神们，新手写库，请手下留情
 
 ### API
 **1.createInstance**
